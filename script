@@ -1,6 +1,6 @@
 
  function parseXml() {
-   var url = 'http://www.journalism.co.za/feed/';
+   var url = 'http://www.journalism.co.za/blog/topics/categories/journalism-jobs/jobs-266/feed/';
    var xml = UrlFetchApp.fetch(url).getContentText();
    var document = XmlService.parse(xml);
    var root = document.getRootElement();
