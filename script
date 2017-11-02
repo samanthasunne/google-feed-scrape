@@ -1,20 +1,30 @@
-function parseXml() {
-  var url = 'http://en.arij.net/category/jobs-opportunity/feed';
-  var xml = UrlFetchApp.fetch(url).getContentText();
-  var document = XmlService.parse(xml);
-  var root = document.getRootElement();
-  var atom = XmlService.getNamespace('http://www.w3.org/2005/Atom');
-  var entries = document.getRootElement().getChild('channel').getChildren('item');
-  var spreadsheet = [];
-  for (var i = 0; i < entries.length; i++) {
+
+ function parseXml() {
+   var url = 'http://www.journalism.co.za/feed/';
+   var xml = UrlFetchApp.fetch(url).getContentText();
+   var document = XmlService.parse(xml);
+   var root = document.getRootElement();
+   var atom = XmlService.getNamespace('http://www.w3.org/2005/Atom');
+ 
+   var entries = document.getRootElement().getChild('channel').getChildren('item');
+   var spreadsheet = [];
+   for (var i = 0; i < entries.length; i++) {
      var title = entries[i].getChild('title').getText();
      var date = entries[i].getChild('pubDate').getText();
      var link = entries[i].getChild('link').getText();
      var categoryElements = entries[i].getChildren('category');
      var labels = [];
      var flag = false;
-     
+     for (var j = 0; j < categoryElements.length; j++) {
+       var category = categoryElements[j].getText()
+       labels.push(categoryElements[j].getText());
+     if (category == "Journalism Jobs" || category== "Jobs") {
+    flag = true;
+        } 
+     }
+     if (flag) {
        spreadsheet.push([title, date, link]);
+     }
    }
  Logger.log(spreadsheet);
    return spreadsheet;
